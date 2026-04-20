@@ -33,6 +33,30 @@ const authService = {
    */
   logout: (refreshToken) =>
     api.post('/api/auth/revoke-refresh-token', { refreshToken }),
+
+  /**
+   * POST /api/auth/forgot-password
+   */
+  forgotPassword: (email) =>
+    api.post('/api/auth/forgot-password', { email }),
+
+  /**
+   * POST /api/auth/reset-password
+   */
+  resetPassword: (email, code, newPassword) =>
+    api.post('/api/auth/reset-password', { email, code, newPassword }),
+
+  /**
+   * POST /api/auth/confirm-email
+   */
+  confirmEmail: (userId, code) =>
+    api.post('/api/auth/confirm-email', { userId, code }),
+
+  /**
+   * POST /api/auth/resend-confirmation-email
+   */
+  resendConfirmationEmail: (email) =>
+    api.post('/api/auth/resend-confirmation-email', { email }),
 };
 
 export default authService;
