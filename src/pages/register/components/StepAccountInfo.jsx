@@ -23,6 +23,8 @@ export default function StepAccountInfo({ role, data, onChange, onNext, onBack }
     else if (!/\S+@\S+\.\S+/.test(data.email)) e.email = 'Enter a valid email';
     if (!data.password) e.password = 'Password is required';
     else if (data.password.length < 8) e.password = 'At least 8 characters required';
+    if (!data.phoneNumber) e.phoneNumber = 'Phone number is required';
+    else if (!/^(010|011|012|015)\d{8}$/.test(data.phoneNumber)) e.phoneNumber = 'Must be an Egyptian phone number (11 digits, starts with 010, 011, 012, 015)';
     if (data.password !== data.confirmPassword) e.confirmPassword = 'Passwords do not match';
     setErrors(e);
     return Object.keys(e).length === 0;
@@ -81,6 +83,7 @@ export default function StepAccountInfo({ role, data, onChange, onNext, onBack }
       <div className="space-y-4 mb-6">
         {field('name', 'Full Name', 'text', 'Your full name', 'ri-user-line')}
         {field('email', 'Email Address', 'email', 'you@example.com', 'ri-mail-line')}
+        {field('phoneNumber', 'Phone Number', 'tel', '01012345678', 'ri-phone-line')}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
           <div className="relative">
