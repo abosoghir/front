@@ -1,0 +1,6 @@
+@WaslaSerga_HostAddress = http://localhost:5226
+
+GET {{WaslaSerga_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
