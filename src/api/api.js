@@ -42,7 +42,7 @@ api.interceptors.response.use(
     const body = response.data;
     if (body && typeof body.isSuccess !== 'undefined') {
       if (body.isSuccess) {
-        return body.hasData ? body.data : body;
+        return typeof body.value !== 'undefined' ? body.value : body;
       }
       // Server returned a business error inside Result pattern
       const err = new Error(body.error?.description || 'Request failed');
@@ -89,8 +89,8 @@ api.interceptors.response.use(
           refreshToken: storedRefreshToken,
         });
 
-        if (data.isSuccess && data.hasData) {
-          const authData = data.data;
+        if (data.isSuccess && typeof data.value !== 'undefined') {
+          const authData = data.value;
           localStorage.setItem('wasla_token', authData.token);
           localStorage.setItem('wasla_refresh_token', authData.refreshToken);
           localStorage.setItem('wasla_refresh_token_expiration', authData.refreshTokenExpiration);
