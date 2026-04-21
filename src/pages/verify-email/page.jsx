@@ -6,6 +6,7 @@ export default function VerifyEmailPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [email] = useState(location.state?.email || '');
+  const [userId] = useState(location.state?.userId || '');
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -38,9 +39,12 @@ export default function VerifyEmailPage() {
     setError('');
     
     try {
-      // In the frontend API service, confirmEmail takes (userId, code) but we changed backend to (Email, Code)
-      // So we will pass email as the first parameter. (We will also update authService.js to match)
-      await authService.confirmEmail(email, code);
+      // The remote backend expects (userId, code)
+      // Throw an error early if userId is inherently missing (like direct entry from login link)
+      if (!userId) {
+        throw new Error("Missing user identification context. Please try registering again or contact support.");
+      }
+      await authService.confirmEmail(userId, code);
       
       // Success!
       // Navigate to login with success message

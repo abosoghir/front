@@ -41,8 +41,7 @@ export default function RegisterPage() {
     setRegisterLoading(true);
     setRegisterError('');
     try {
-      // Register the user
-      await register(
+      const data = await register(
         accountData.name,
         accountData.email,
         accountData.phoneNumber,
@@ -51,7 +50,7 @@ export default function RegisterPage() {
       );
 
       // Navigate to Verify Email page
-      navigate('/verify-email', { state: { email: accountData.email } });
+      navigate('/verify-email', { state: { email: accountData.email, userId: data.userId } });
     } catch (err) {
       setRegisterError(err.message || 'Registration failed. Please try again.');
     } finally {
