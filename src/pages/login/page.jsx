@@ -38,20 +38,27 @@ export default function LoginPage() {
         navigate('/dashboard/seeker', { replace: true });
       }
     } catch (err) {
-      const data = err.response?.data;
-      const errorMsg = data?.error?.description || data?.title || data?.message || err.message;
+      console.error("Login attempt failed:", err);
+      let errorText = err.message || 'Unknown error occurred';
+      
+      const body = err.response?.data;
+      if (body?.error?.description) {
+        errorText = body.error.description;
+      } else if (body?.title) {
+        errorText = body.title;
+      } else if (body?.message) {
+        errorText = body.message;
+      } else if (err.code === 'User.EmailNotConfirmed') {
+        errorText = 'Email is not confirmed';
+      }
 
-      if (errorMsg === 'Email is not confirmed' || errorMsg?.includes('not confirmed') || errorMsg?.includes('EmailNotConfirmed')) {
-        setError(
-          <span>
-            Please confirm your email first.{' '}
-            <Link to="/verify-email" state={{ email: form.email }} className="underline font-semibold hover:text-red-700">
-              Verify now
-            </Link>
-          </span>
-        );
+      errorText = String(errorText);
+
+      // We explicitly check for known unconfirmed string combinations
+      if (errorText.includes('not confirmed') || errorText.includes('EmailNotConfirmed') || err.code === 'User.EmailNotConfirmed') {
+        setError('Please confirm your email first before logging in. Check your inbox for the link.');
       } else {
-        setError(errorMsg || 'Invalid email or password. Please try again.');
+        setError(errorText || 'Invalid email or password. Please try again.');
       }
     } finally {
       setLoading(false);
