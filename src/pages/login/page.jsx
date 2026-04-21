@@ -38,7 +38,9 @@ export default function LoginPage() {
         navigate('/dashboard/seeker', { replace: true });
       }
     } catch (err) {
-      const errorMsg = err.response?.data?.message || err.message;
+      const data = err.response?.data;
+      const errorMsg = data?.error?.description || data?.title || data?.message || err.message;
+
       if (errorMsg === 'Email is not confirmed' || errorMsg?.includes('not confirmed') || errorMsg?.includes('EmailNotConfirmed')) {
         setError(
           <span>

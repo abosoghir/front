@@ -46,7 +46,9 @@ export default function VerifyEmailPage() {
       // Navigate to login with success message
       navigate('/login', { state: { message: 'Email confirmed successfully! You can now log in.' } });
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Invalid confirmation code. Please try again.');
+      const data = err.response?.data;
+      const serverMsg = data?.error?.description || data?.title || data?.message;
+      setError(serverMsg || err.message || 'Invalid confirmation code. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -62,7 +64,9 @@ export default function VerifyEmailPage() {
       setCooldown(60);
       setResendStatus('A new code has been sent to your email.');
     } catch (err) {
-      setError(err.response?.data?.message || err.message || 'Failed to resend code');
+      const data = err.response?.data;
+      const serverMsg = data?.error?.description || data?.title || data?.message;
+      setError(serverMsg || err.message || 'Failed to resend code');
     }
   };
 
