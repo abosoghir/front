@@ -50,14 +50,8 @@ export default function RegisterPage() {
         role === 'seeker' ? 'Seeker' : 'Helper'
       );
 
-      // Auto-login after successful registration
-      try {
-        await login(accountData.email, accountData.password);
-      } catch {
-        // Login after register is non-critical — user can login manually
-      }
-
-      setStep(3);
+      // Navigate to Verify Email page
+      navigate('/verify-email', { state: { email: accountData.email } });
     } catch (err) {
       setRegisterError(err.message || 'Registration failed. Please try again.');
     } finally {

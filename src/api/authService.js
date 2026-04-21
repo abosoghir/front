@@ -49,8 +49,8 @@ const authService = {
   /**
    * POST /api/auth/confirm-email
    */
-  confirmEmail: (userId, code) =>
-    api.post('/api/auth/confirm-email', { userId, code }),
+  confirmEmail: (email, code) =>
+    api.post('/api/auth/confirm-email', { email, code }),
 
   /**
    * POST /api/auth/resend-confirmation-email

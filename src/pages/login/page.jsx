@@ -10,10 +10,12 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState(location.state?.message || '');
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
     setError('');
+    setSuccessMessage('');
   };
 
   const handleSubmit = async (e) => {
@@ -36,7 +38,19 @@ export default function LoginPage() {
         navigate('/dashboard/seeker', { replace: true });
       }
     } catch (err) {
-      setError(err.message || 'Invalid email or password. Please try again.');
+      const errorMsg = err.response?.data?.message || err.message;
+      if (errorMsg === 'Email is not confirmed' || errorMsg?.includes('not confirmed') || errorMsg?.includes('EmailNotConfirmed')) {
+        setError(
+          <span>
+            Please confirm your email first.{' '}
+            <Link to="/verify-email" state={{ email: form.email }} className="underline font-semibold hover:text-red-700">
+              Verify now
+            </Link>
+          </span>
+        );
+      } else {
+        setError(errorMsg || 'Invalid email or password. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -131,6 +145,14 @@ export default function LoginPage() {
             <span className="text-xs text-gray-400 font-medium">or continue with email</span>
             <div className="flex-1 h-px bg-gray-200"></div>
           </div>
+          {successMessage && (
+            <div className="flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-lg px-4 py-3 mb-5">
+              <div className="w-4 h-4 flex items-center justify-center shrink-0">
+                <i className="ri-check-line text-emerald-500 text-sm"></i>
+              </div>
+              <span className="text-emerald-600 text-sm">{successMessage}</span>
+            </div>
+          )}
           {error && (
             <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-5">
               <div className="w-4 h-4 flex items-center justify-center shrink-0">

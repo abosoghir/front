@@ -2,6 +2,7 @@ import NotFound from "../pages/NotFound";
 import Home from "../pages/home/page";
 import LoginPage from "../pages/login/page";
 import RegisterPage from "../pages/register/page";
+import VerifyEmailPage from "../pages/verify-email/page";
 import HelpersPage from "../pages/helpers/page";
 import HelperProfilePage from "../pages/helpers/profile/page";
 import SeekerOverviewPage from "../pages/dashboard/seeker/overview/page";
@@ -36,6 +37,7 @@ const routes = [
   { path: "/projects", element: <ProjectsPage /> },
   { path: "/login", element: <LoginPage /> },
   { path: "/register", element: <RegisterPage /> },
+  { path: "/verify-email", element: <VerifyEmailPage /> },
   { path: "/helpers", element: <HelpersPage /> },
   { path: "/helpers/:id", element: <HelperProfilePage /> },
 
